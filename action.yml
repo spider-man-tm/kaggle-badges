@@ -1,4 +1,4 @@
-name: "Profile Kaggle Badges"
+name: "Kaggle Badges"
 description: "Generates kaggle badges and saves them in the specified directory"
 inputs:
   user_name:

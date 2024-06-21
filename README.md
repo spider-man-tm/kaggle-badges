@@ -1,4 +1,4 @@
-# Profile Kaggle Badges
+# Kaggle Badges
 
 [English](./README.md) | [Japanese](./docs/README.ja-jp.md)
 
@@ -41,7 +41,7 @@ Copy the following code and paste it into the YAML file. Replace { Your Kaggle U
 - ref. [Using secrets in workflow](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 ```yaml
-name: Profile Kaggle Badges
+name: Kaggle Badges
 
 on:
   schedule:
@@ -65,7 +65,7 @@ jobs:
       - name: Install Puppeteer browser
         run: npx puppeteer browsers install chrome
 
-      - name: Use Profile Kaggle Badges Action
+      - name: Use Kaggle Badges Action
         uses: spider-man-tm/kaggle-badges@v0.1.0
         with:
           # ex. user_name: spidermandance
