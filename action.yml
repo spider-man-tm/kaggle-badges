@@ -1,0 +1,12 @@
+name: "Profile Kaggle Badges"
+description: "Generates kaggle badges and saves them in the specified directory"
+inputs:
+  user_name:
+    description: "The Kaggle username to generate badges for"
+    required: true
+runs:
+  using: "node20"
+  main: "dist/index.js"
+branding:
+  icon: "award"
+  color: "red"

@@ -1,0 +1,32 @@
+version: 2
+
+updates:
+  - package-ecosystem: "github-actions"
+    directory: /
+    schedule:
+      interval: "monthly"
+    reviewers:
+      - "spider-man-tm"
+    groups:
+      major-update:
+        update-types:
+          - "major"
+      minor-patch-update:
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "npm"
+    directory: /
+    schedule:
+      interval: "monthly"
+    reviewers:
+      - "spider-man-tm"
+    groups:
+      major-update:
+        update-types:
+          - "major"
+      minor-patch-update:
+        update-types:
+          - "minor"
+          - "patch"
