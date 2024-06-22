@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc && ncc build dist/index.js -o dist",
-    "local-run": "INPUT_USER_NAME=spshota node dist/index.js",
+    "local-run": "INPUT_USER_NAME=spidermandance node dist/index.js",
     "test": "jest",
     "prepare": "yarn tsc"
   },
