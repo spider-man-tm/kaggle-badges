@@ -15,68 +15,100 @@ async function getKaggleuserProfile(userName) {
     const browser = await puppeteer_1.default.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
-    // Scroll the page to load all the elements
-    await autoScroll(page);
     await new Promise((resolve) => setTimeout(resolve, 10000));
     // Initialize the userProfile object
     let userProfile = {};
-    for (let key in xpaths_1.xpaths) {
-        const categoryKey = key;
-        const xpath = xpaths_1.xpaths[categoryKey];
-        try {
-            // get the element by xpath
-            const elementHandle = await page.waitForSelector(`::-p-xpath(${xpath})`, {
-                timeout: 10000,
-            });
-            // get the text content of the element
-            const info = await page.evaluate((element) => {
-                return element ? element.textContent : null;
-            }, elementHandle);
-            // ensure the text is not null
-            if (info == null) {
-                throw new Error(`Text not found in selector:${categoryKey}`);
-            }
-            // ensure the text is a valid rank
-            if (!isRank(info)) {
-                throw new Error(`Invalid rank:${info} in selector:${categoryKey}`);
-            }
-            userProfile[categoryKey] = info;
+    for (const key in xpaths_1.xpaths) {
+        const section = xpaths_1.xpaths[key];
+        const rank = await getTextContentByXpath(page, section.rank);
+        const medalCounts = await getMedalCountsForProfile(page, section.medal_count);
+        // Initialize the corresponding section in userProfile if not already initialized
+        if (key === "Competitions") {
+            userProfile.Competitions = {
+                rank: rank,
+                medal_counts: medalCounts,
+            };
         }
-        catch (error) {
-            console.error(`getUserinfo ${categoryKey} is error.`);
-            throw new Error(`${error}`);
+        else if (key === "Datasets") {
+            userProfile.Datasets = {
+                rank: rank,
+                medal_counts: medalCounts,
+            };
+        }
+        else if (key === "Notebooks") {
+            userProfile.Notebooks = {
+                rank: rank,
+                medal_counts: medalCounts,
+            };
+        }
+        else if (key === "Discussions") {
+            userProfile.Discussions = {
+                rank: rank,
+                medal_counts: medalCounts,
+            };
         }
     }
     await browser.close();
     return userProfile;
 }
 /**
- * Scroll the page to load all the elements
- * @param page - Puppeteer page
+ * Get the text content of an element by XPath
+ * @param page - The Puppeteer page
+ * @param xpath - The XPath of the element
  */
-async function autoScroll(page) {
-    await page.evaluate(async () => {
-        await new Promise((resolve) => {
-            let totalHeight = 0;
-            const distance = 100;
-            const timer = setInterval(() => {
-                const scrollHeight = document.body.scrollHeight;
-                window.scrollBy(0, distance);
-                totalHeight += distance;
-                if (totalHeight >= scrollHeight) {
-                    clearInterval(timer);
-                    resolve();
-                }
-            }, 100);
-        });
-    });
-}
+const getTextContentByXpath = async (page, xpath) => {
+    const elementHandle = await page.waitForSelector(`::-p-xpath(${xpath})`);
+    const info = await page.evaluate((element) => {
+        return element ? element.textContent : null;
+    }, elementHandle);
+    if (info == null) {
+        throw new Error(`Text not found for xpath: ${xpath}`);
+    }
+    return info;
+};
 /**
- * Ensure the text is a valid rank
- * @param info
- * @returns boolean
+ Helper function to get medal counts by XPath
+ * @param page - The Puppeteer page
+ * @param baseXpath - The base XPath of the medal counts
  */
-const isRank = (info) => {
-    const ranks = ["Grandmaster", "Master", "Expert", "Contributor"];
-    return ranks.includes(info);
+const getMedalCountsForProfile = async (page, baseXpath) => {
+    const medalCounts = {
+        gold: 0,
+        silver: 0,
+        bronze: 0,
+    };
+    // Function to get medal counts and types
+    const getMedalsData = async (xpath) => {
+        return await page.evaluate((xpath) => {
+            const medalsData = [];
+            const result = document.evaluate(`${xpath}/div`, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+            for (let i = 0; i < result.snapshotLength; i++) {
+                const container = result.snapshotItem(i);
+                if (container) {
+                    const countElement = container.querySelector("span");
+                    const imgElement = container.querySelector("img");
+                    const count = countElement
+                        ? parseInt(countElement.textContent || "0", 10)
+                        : 0;
+                    const type = imgElement ? imgElement.title.trim().toLowerCase() : "";
+                    medalsData.push({ type, count });
+                }
+            }
+            return medalsData;
+        }, xpath);
+    };
+    const medalsData = await getMedalsData(baseXpath);
+    medalsData.forEach((medal) => {
+        const { type, count } = medal;
+        if (type.includes("gold")) {
+            medalCounts.gold += isNaN(count) ? 0 : count;
+        }
+        else if (type.includes("silver")) {
+            medalCounts.silver += isNaN(count) ? 0 : count;
+        }
+        else if (type.includes("bronze")) {
+            medalCounts.bronze += isNaN(count) ? 0 : count;
+        }
+    });
+    return medalCounts;
 };

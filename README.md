@@ -8,12 +8,19 @@ This project automatically generates badges based on your Kaggle rank. It create
 
 Below is a list of badges for Competitions. Similar style badges are automatically generated for Datasets, Notebooks, and Discussions.
 
-| Grandmaster                                                         | Master                                                    | Expert                                                    | Contributor                                                         |
-| ------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------- |
-| [![Grandmaster](./docs/images/Grandmaster/plastic-black.svg)]()     | [![Master](./docs/images/Master/plastic-black.svg)]()     | [![Expert](./docs/images/Expert/plastic-black.svg)]()     | [![Contributor](./docs/images/Contributor/plastic-black.svg)]()     |
-| [![Grandmaster](./docs/images/Grandmaster/plastic-white.svg)]()     | [![Master](./docs/images/Master/plastic-white.svg)]()     | [![Expert](./docs/images/Expert/plastic-white.svg)]()     | [![Contributor](./docs/images/Contributor/plastic-white.svg)]()     |
-| [![Grandmaster](./docs/images/Grandmaster/flat-square-black.svg)]() | [![Master](./docs/images/Master/flat-square-black.svg)]() | [![Expert](./docs/images/Expert/flat-square-black.svg)]() | [![Contributor](./docs/images/Contributor/flat-square-black.svg)]() |
-| [![Grandmaster](./docs/images/Grandmaster/flat-square-white.svg)]() | [![Master](./docs/images/Master/flat-square-white.svg)]() | [![Expert](./docs/images/Expert/flat-square-white.svg)]() | [![Contributor](./docs/images/Contributor/flat-square-white.svg)]() |
+| Grandmaster                                                                | Master                                                           | Expert                                                           | Contributor                                                                |
+| -------------------------------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [![Grandmaster](./docs/images/badges/Grandmaster/plastic-black.svg)]()     | [![Master](./docs/images/badges/Master/plastic-black.svg)]()     | [![Expert](./docs/images/badges/Expert/plastic-black.svg)]()     | [![Contributor](./docs/images/badges/Contributor/plastic-black.svg)]()     |
+| [![Grandmaster](./docs/images/badges/Grandmaster/plastic-white.svg)]()     | [![Master](./docs/images/badges/Master/plastic-white.svg)]()     | [![Expert](./docs/images/badges/Expert/plastic-white.svg)]()     | [![Contributor](./docs/images/badges/Contributor/plastic-white.svg)]()     |
+| [![Grandmaster](./docs/images/badges/Grandmaster/flat-square-black.svg)]() | [![Master](./docs/images/badges/Master/flat-square-black.svg)]() | [![Expert](./docs/images/badges/Expert/flat-square-black.svg)]() | [![Contributor](./docs/images/badges/Contributor/flat-square-black.svg)]() |
+| [![Grandmaster](./docs/images/badges/Grandmaster/flat-square-white.svg)]() | [![Master](./docs/images/badges/Master/flat-square-white.svg)]() | [![Expert](./docs/images/badges/Expert/flat-square-white.svg)]() | [![Contributor](./docs/images/badges/Contributor/flat-square-white.svg)]() |
+
+Additionally, we automatically generate badges based on the number of medals earned. Below is my Kaggle achievement status as of 2024/06/28.
+
+|                                                  |                                              |                                               |                                                 |
+| ------------------------------------------------ | -------------------------------------------- | --------------------------------------------- | ----------------------------------------------- |
+| ![](./docs/images/plates/Competitions/white.svg) | ![](./docs/images/plates/Datasets/white.svg) | ![](./docs/images/plates/Notebooks/white.svg) | ![](./docs/images/plates/Discussions/white.svg) |
+| ![](./docs/images/plates/Competitions/black.svg) | ![](./docs/images/plates/Datasets/black.svg) | ![](./docs/images/plates/Notebooks/black.svg) | ![](./docs/images/plates/Discussions/black.svg) |
 
 ## Usage
 
@@ -66,7 +73,7 @@ jobs:
         run: npx puppeteer browsers install chrome@126.0.6478.63
 
       - name: Use Kaggle Badges Action
-        uses: spider-man-tm/kaggle-badges@v0.1.0
+        uses: spider-man-tm/kaggle-badges@v1.0.0
         with:
           # ex. user_name: spidermandance
           user_name: { Your Kaggle Username }
@@ -96,11 +103,13 @@ e.g.
 # Markdown
 
 ![](./kaggle-badges/CompetitionsRank/plastic-black.svg)
+![](./kaggle-plates/Competitions/white.svg)
 ```
 
 ```html
 <!-- HTML -->
 <img src="./kaggle-badges/CompetitionsRank/plastic-black.svg" />
+<img src="./kaggle-plates/Competitions/white.svg" />
 ```
 
 Following is my GitHub Profile README.md as an example
