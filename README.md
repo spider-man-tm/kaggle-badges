@@ -57,7 +57,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  create-badges:
     runs-on: ubuntu-latest
 
     steps:
@@ -73,7 +73,7 @@ jobs:
         run: npx puppeteer browsers install chrome@126.0.6478.63
 
       - name: Use Kaggle Badges Action
-        uses: spider-man-tm/kaggle-badges@v1.0.0
+        uses: spider-man-tm/kaggle-badges@v1.1.0
         with:
           # ex. user_name: spidermandance
           user_name: { Your Kaggle Username }
@@ -84,7 +84,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add ./kaggle-badges/*
+          git add ./kaggle-badges/* ./kaggle-plates/*
           git commit -m "Add generated SVG files" || echo "No changes to commit"
           git push
 ```
