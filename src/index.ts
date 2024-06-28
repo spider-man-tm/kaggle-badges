@@ -2,6 +2,7 @@ import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { getKaggleuserProfile } from "./scrape/getUserInfo";
 import { createBadge } from "./badge/createBadges";
+import { createPlate } from "./plate/createPlates";
 
 async function run() {
   try {
@@ -13,6 +14,7 @@ async function run() {
     const userProfile = await getKaggleuserProfile(userName);
     // create the badge
     await createBadge(userProfile);
+    await createPlate(userProfile);
   } catch (error) {
     core.setFailed(`Action failed with error ${error}`);
   }
