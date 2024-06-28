@@ -4,6 +4,7 @@ export type Category =
   | "Datasets"
   | "Notebooks"
   | "Discussions";
+export type MedalCounts = { gold: number; silver: number; bronze: number };
 
 /**
  * Color map for each rank
@@ -23,16 +24,28 @@ export interface ColorMap {
 /**
  * Kaggle profile data
  * @type {KaggleProfile}
- * @property {Rank} Competitions - Competitions rank
- * @property {Rank} Datasets - Datasets rank
- * @property {Rank} Notebooks - Notebooks rank
- * @property {Rank} Discussions - Discussions rank
+ * @property { rank: Rank, medal_counts: MedalCounts } Competitions - Competitions data
+ * @property { rank: Rank, medal_counts: MedalCounts } Datasets - Datasets data
+ * @property { rank: Rank, medal_counts: MedalCounts } Notebooks - Notebooks data
+ * @property { rank: Rank, medal_counts: MedalCounts } Discussions - Discussions data
  */
 export interface KaggleProfile {
-  Competitions?: Rank;
-  Datasets?: Rank;
-  Notebooks?: Rank;
-  Discussions?: Rank;
+  Competitions?: { rank: Rank; medal_counts: MedalCounts };
+  Datasets?: { rank: Rank; medal_counts: MedalCounts };
+  Notebooks?: { rank: Rank; medal_counts: MedalCounts };
+  Discussions?: { rank: Rank; medal_counts: MedalCounts };
+}
+
+interface Xpath {
+  rank: string;
+  medal_count: string;
+}
+
+export interface Xpaths {
+  Competitions: Xpath;
+  Datasets: Xpath;
+  Notebooks: Xpath;
+  Discussions: Xpath;
 }
 
 /**
@@ -48,17 +61,35 @@ export interface Badge {
   color: ColorMap[Rank];
 }
 
-/**
- * XPath map for each category
- * @type {XPathMap}
- * @property {string} Competitions - XPath for Competitions
- * @property {string} Datasets - XPath for Datasets
- * @property {string} Notebooks - XPath for Notebooks
- * @property {string} Discussions - XPath for Discussions
- */
-export interface XPathMap {
-  Competitions: string;
-  Datasets: string;
-  Notebooks: string;
-  Discussions: string;
+export interface ColorStop {
+  offset: number;
+  color: string;
+}
+
+export interface Medal {
+  type: string;
+  count: number;
+  stops: ColorStop[];
+  x: number;
+  y: number;
+}
+
+export interface Gradient {
+  gradient: (
+    type: string,
+    callback: (add: { stop: (offset: number, color: string) => void }) => void
+  ) => { attr: (attributes: object) => { id: (id: string) => any } };
+}
+
+export interface AnimateAttributes {
+  attributeName: string;
+  from: string | number;
+  to: string | number;
+  dur: string;
+  repeatCount: string;
+}
+
+export interface SVGElement {
+  element: (name: string, attributes: AnimateAttributes) => any;
+  add: (child: any) => void;
 }

@@ -49,19 +49,24 @@ async function createBadge(profile) {
     const projectRoot = process.cwd();
     const badgesDirBase = path.join(projectRoot, "kaggle-badges");
     // Create the badge for each category
-    for (let key in profile) {
-        const category = key;
-        const rank = profile[category];
-        const iconUrl = `https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`;
-        const color = color_1.colorMap[rank];
-        const styles = ["flat-square", "plastic"];
-        const textColors = ["white", "black"];
-        for (const style of styles) {
-            for (const textColor of textColors) {
-                const saveDir = path.join(badgesDirBase, `${category}Rank`);
-                const saveFilePath = path.join(saveDir, `${style}-${textColor}.svg`);
-                ensureDirectoryExistence(saveDir);
-                await createBadgeBase(iconUrl, saveFilePath, category, rank, color, textColor, style);
+    for (const key in profile) {
+        if (profile[key]) {
+            const category = key;
+            const section = profile[category];
+            if (section && section.rank) {
+                const rank = section.rank;
+                const iconUrl = `https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`;
+                const color = color_1.colorMap[rank];
+                const styles = ["flat-square", "plastic"];
+                const textColors = ["white", "black"];
+                for (const style of styles) {
+                    for (const textColor of textColors) {
+                        const saveDir = path.join(badgesDirBase, `${category}Rank`);
+                        const saveFilePath = path.join(saveDir, `${style}-${textColor}.svg`);
+                        ensureDirectoryExistence(saveDir);
+                        await createBadgeBase(iconUrl, saveFilePath, category, rank, color, textColor, style);
+                    }
+                }
             }
         }
     }

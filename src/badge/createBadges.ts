@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as fs from "fs";
 import * as path from "path";
-import { Category, Rank, KaggleProfile } from "../types";
+import { KaggleProfile } from "../types";
 import { colorMap } from "./color";
 
 /**
@@ -24,30 +24,39 @@ export async function createBadge(profile: KaggleProfile) {
   const badgesDirBase = path.join(projectRoot, "kaggle-badges");
 
   // Create the badge for each category
-  for (let key in profile) {
-    const category = key as Category;
-    const rank = profile[category] as Rank;
-    const iconUrl = `https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`;
-    const color = colorMap[rank];
+  for (const key in profile) {
+    if (profile[key as keyof KaggleProfile]) {
+      const category = key as keyof KaggleProfile;
+      const section = profile[category];
 
-    const styles = ["flat-square", "plastic"];
-    const textColors = ["white", "black"];
+      if (section && section.rank) {
+        const rank = section.rank;
+        const iconUrl = `https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`;
+        const color = colorMap[rank];
 
-    for (const style of styles) {
-      for (const textColor of textColors) {
-        const saveDir = path.join(badgesDirBase, `${category}Rank`);
-        const saveFilePath = path.join(saveDir, `${style}-${textColor}.svg`);
+        const styles = ["flat-square", "plastic"];
+        const textColors = ["white", "black"];
 
-        ensureDirectoryExistence(saveDir);
-        await createBadgeBase(
-          iconUrl,
-          saveFilePath,
-          category,
-          rank,
-          color,
-          textColor,
-          style
-        );
+        for (const style of styles) {
+          for (const textColor of textColors) {
+            const saveDir = path.join(badgesDirBase, `${category}Rank`);
+            const saveFilePath = path.join(
+              saveDir,
+              `${style}-${textColor}.svg`
+            );
+
+            ensureDirectoryExistence(saveDir);
+            await createBadgeBase(
+              iconUrl,
+              saveFilePath,
+              category,
+              rank,
+              color,
+              textColor,
+              style
+            );
+          }
+        }
       }
     }
   }
