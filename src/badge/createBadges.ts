@@ -3,16 +3,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { KaggleProfile } from "../types";
 import { colorMap } from "./color";
-
-/**
- * Recursively create directory if it doesn't exist
- * @param dir - Directory path to create
- */
-function ensureDirectoryExistence(dir: string) {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-}
+import { ensureDirectoryExistence } from "../utils";
 
 /**
  * Create the badge for each category
