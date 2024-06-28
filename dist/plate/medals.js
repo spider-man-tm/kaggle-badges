@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.medals = void 0;
+/**
+ * The medals to display on the plate
+ */
 exports.medals = [
     {
         type: "gold",

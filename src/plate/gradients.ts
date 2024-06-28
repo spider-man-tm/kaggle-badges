@@ -1,5 +1,8 @@
 import { Gradient, ColorStop } from "../types";
 
+/**
+ * Create a gradient for the SVG
+ */
 export function createGradient(defs: Gradient, id: string, stops: ColorStop[]) {
   const gradient = defs
     .gradient("linear", (add) => {

@@ -10,12 +10,19 @@
 
 以下はコンペティション用のバッジのリストです。同様のスタイルのバッジがデータセット、ノートブック、ディスカッション用にも自動生成されます。
 
-| Grandmaster                                                    | Master                                               | Expert                                               | Contributor                                                    |
-| -------------------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | -------------------------------------------------------------- |
-| [![Grandmaster](./images/Grandmaster/plastic-black.svg)]()     | [![Master](./images/Master/plastic-black.svg)]()     | [![Expert](./images/Expert/plastic-black.svg)]()     | [![Contributor](./images/Contributor/plastic-black.svg)]()     |
-| [![Grandmaster](./images/Grandmaster/plastic-white.svg)]()     | [![Master](./images/Master/plastic-white.svg)]()     | [![Expert](./images/Expert/plastic-white.svg)]()     | [![Contributor](./images/Contributor/plastic-white.svg)]()     |
-| [![Grandmaster](./images/Grandmaster/flat-square-black.svg)]() | [![Master](./images/Master/flat-square-black.svg)]() | [![Expert](./images/Expert/flat-square-black.svg)]() | [![Contributor](./images/Contributor/flat-square-black.svg)]() |
-| [![Grandmaster](./images/Grandmaster/flat-square-white.svg)]() | [![Master](./images/Master/flat-square-white.svg)]() | [![Expert](./images/Expert/flat-square-white.svg)]() | [![Contributor](./images/Contributor/flat-square-white.svg)]() |
+| Grandmaster                                                           | Master                                                      | Expert                                                      | Contributor                                                           |
+| --------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------- |
+| [![Grandmaster](./images/badges/Grandmaster/plastic-black.svg)]()     | [![Master](./images/badges/Master/plastic-black.svg)]()     | [![Expert](./images/badges/Expert/plastic-black.svg)]()     | [![Contributor](./images/badges/Contributor/plastic-black.svg)]()     |
+| [![Grandmaster](./images/badges/Grandmaster/plastic-white.svg)]()     | [![Master](./images/badges/Master/plastic-white.svg)]()     | [![Expert](./images/badges/Expert/plastic-white.svg)]()     | [![Contributor](./images/badges/Contributor/plastic-white.svg)]()     |
+| [![Grandmaster](./images/badges/Grandmaster/flat-square-black.svg)]() | [![Master](./images/badges/Master/flat-square-black.svg)]() | [![Expert](./images/badges/Expert/flat-square-black.svg)]() | [![Contributor](./images/badges/Contributor/flat-square-black.svg)]() |
+| [![Grandmaster](./images/badges/Grandmaster/flat-square-white.svg)]() | [![Master](./images/badges/Master/flat-square-white.svg)]() | [![Expert](./images/badges/Expert/flat-square-white.svg)]() | [![Contributor](./images/badges/Contributor/flat-square-white.svg)]() |
+
+また、メダル獲得数に応じて以下のようなプレートも自動で生成します。以下は 2024/06/28 時点の私の Kaggle 達成状況です。
+
+|                                             |                                         |                                          |                                            |
+| ------------------------------------------- | --------------------------------------- | ---------------------------------------- | ------------------------------------------ |
+| ![](./images/plates/Competitions/white.svg) | ![](./images/plates/Datasets/white.svg) | ![](./images/plates/Notebooks/white.svg) | ![](./images/plates/Discussions/white.svg) |
+| ![](./images/plates/Competitions/black.svg) | ![](./images/plates/Datasets/black.svg) | ![](./images/plates/Notebooks/black.svg) | ![](./images/plates/Discussions/black.svg) |
 
 ## 使用方法
 
@@ -23,7 +30,7 @@
 
 あなたの GitHub ユーザー名と同じ名前のリポジトリを作成してください。このリポジトリはあなたの GitHub プロフィールに表示されます。例えば、私の GitHub ユーザー名は spiderman-tm ですが、その場合リポジトリ名は spiderman-tm になります。
 
-- 参考：[Managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)
+- 参考：[Managing your profile README](https:/.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)
 
 ### 2. ワークフローの権限設定
 
@@ -39,7 +46,7 @@
 
 以下のコードをコピーして YAML ファイルに貼り付けてください。{ Your Kaggle Username }をあなたの Kaggle ユーザー名に置き換えてください。Kaggle ユーザー名を直接 YAML ファイルに含めたくない場合は、GitHub Secrets に値を保存する方法もあります。お好みの方法を使用してください。
 
-- ref. [Using secrets in workflow](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+- ref. [Using secrets in workflow](https:/.github.com/en/actions/security-guides/using-secrets-in-github-actions)
 
 ```yaml
 name: Kaggle Badges
@@ -67,7 +74,7 @@ jobs:
         run: npx puppeteer browsers install chrome
 
       - name: Use Kaggle Badges Action
-        uses: spider-man-tm/kaggle-badges@v0.1.0
+        uses: spider-man-tm/kaggle-badges@v1.0.0
         with:
           # ex. user_name: spidermandance
           user_name: { Your Kaggle Username }
@@ -97,11 +104,13 @@ YAML ファイルをリポジトリにコミットおよびプッシュしてく
 # Markdown
 
 ![](./kaggle-badges/CompetitionsRank/plastic-black.svg)
+![](./kaggle-plates/Competitions/white.svg)
 ```
 
 ```html
 <!-- HTML -->
 <img src="./kaggle-badges/CompetitionsRank/plastic-black.svg" />
+<img src="./kaggle-plates/Competitions/white.svg" />
 ```
 
 以下は参考例です

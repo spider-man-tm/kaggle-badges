@@ -41,6 +41,9 @@ interface Xpath {
   medal_count: string;
 }
 
+/**
+ * Xpaths for each category
+ */
 export interface Xpaths {
   Competitions: Xpath;
   Datasets: Xpath;
@@ -66,6 +69,9 @@ export interface ColorStop {
   color: string;
 }
 
+/**
+ * Personal medal data
+ */
 export interface Medal {
   type: string;
   count: number;
@@ -74,6 +80,9 @@ export interface Medal {
   y: number;
 }
 
+/**
+ * SVG gradient
+ */
 export interface Gradient {
   gradient: (
     type: string,
@@ -81,6 +90,9 @@ export interface Gradient {
   ) => { attr: (attributes: object) => { id: (id: string) => any } };
 }
 
+/**
+ * SVG animatino attributes
+ */
 export interface AnimateAttributes {
   attributeName: string;
   from: string | number;
@@ -89,6 +101,9 @@ export interface AnimateAttributes {
   repeatCount: string;
 }
 
+/**
+ * SVG element
+ */
 export interface SVGElement {
   element: (name: string, attributes: AnimateAttributes) => any;
   add: (child: any) => void;

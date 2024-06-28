@@ -51,7 +51,11 @@ async function getKaggleuserProfile(userName) {
     await browser.close();
     return userProfile;
 }
-// Helper function to get text content by XPath
+/**
+ * Get the text content of an element by XPath
+ * @param page - The Puppeteer page
+ * @param xpath - The XPath of the element
+ */
 const getTextContentByXpath = async (page, xpath) => {
     const elementHandle = await page.waitForSelector(`::-p-xpath(${xpath})`);
     const info = await page.evaluate((element) => {
@@ -62,7 +66,11 @@ const getTextContentByXpath = async (page, xpath) => {
     }
     return info;
 };
-// Helper function to get medal counts by XPath
+/**
+ Helper function to get medal counts by XPath
+ * @param page - The Puppeteer page
+ * @param baseXpath - The base XPath of the medal counts
+ */
 const getMedalCountsForProfile = async (page, baseXpath) => {
     const medalCounts = {
         gold: 0,

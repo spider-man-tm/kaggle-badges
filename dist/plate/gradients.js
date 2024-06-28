@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createGradient = createGradient;
+/**
+ * Create a gradient for the SVG
+ */
 function createGradient(defs, id, stops) {
     const gradient = defs
         .gradient("linear", (add) => {

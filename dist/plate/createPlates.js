@@ -36,6 +36,10 @@ const gradients_1 = require("./gradients");
 const animation_1 = require("./animation");
 const medals_1 = require("./medals");
 const utils_1 = require("../utils");
+/**
+ * Create a plate for each category in the Kaggle profile
+ * @param profile The Kaggle profile data
+ */
 async function createPlate(profile) {
     // This directory will be created in the root of the project
     const projectRoot = process.cwd();
@@ -60,12 +64,21 @@ async function createPlate(profile) {
         }
     }
 }
+/**
+ * Create the base SVG plate for a category
+ * @param saveFilePath
+ * @param category
+ * @param rank
+ * @param goldCount
+ * @param silverCount
+ * @param bronzeCount
+ * @param backGround
+ */
 async function createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, backGround = "white") {
     try {
         // Create a DOM window and document using jsdom
         const { window } = new jsdom_1.JSDOM("<!DOCTYPE html><html><body></body></html>");
         const { document } = window;
-        // Type casting to resolve the TypeScript type error
         (0, svg_js_1.registerWindow)(window, document);
         // Create SVG canvas and cast it to Svg type
         const canvas = (0, svg_js_1.SVG)().addTo(document.body).size(95, 120);
@@ -77,9 +90,7 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
             .radius(7); // Adds rounded corners with a radius
         // Load the Kaggle logo SVG
         const logoSVG = await loadExternalSVG(`https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`);
-        // Add the logo to the canvas
         const logo = canvas.nested().svg(logoSVG).move(27, 30);
-        // Define gradients for metallic effect
         const defs = canvas.defs();
         medals_1.medals.forEach((medal) => {
             const gradient = (0, gradients_1.createGradient)(defs, `${medal.type}Gradient`, medal.stops);
@@ -99,7 +110,7 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
         else if (category == "Notebooks") {
             titleX = 13.4;
         }
-        else if (category == "Discussion") {
+        else if (category == "Discussions") {
             titleX = 9.5;
         }
         if (backGround === "black") {
@@ -128,6 +139,10 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
         console.error("Error creating the plate:", error);
     }
 }
+/**
+ * Load the SVG content from an external URL
+ * @param url The URL to fetch the SVG content from
+ */
 async function loadExternalSVG(url) {
     try {
         const response = await (0, node_fetch_1.default)(url);

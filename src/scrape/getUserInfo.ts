@@ -55,7 +55,11 @@ export async function getKaggleuserProfile(
   return userProfile;
 }
 
-// Helper function to get text content by XPath
+/**
+ * Get the text content of an element by XPath
+ * @param page - The Puppeteer page
+ * @param xpath - The XPath of the element
+ */
 const getTextContentByXpath = async (
   page: Page,
   xpath: string
@@ -70,7 +74,11 @@ const getTextContentByXpath = async (
   return info;
 };
 
-// Helper function to get medal counts by XPath
+/**
+ Helper function to get medal counts by XPath
+ * @param page - The Puppeteer page
+ * @param baseXpath - The base XPath of the medal counts
+ */
 const getMedalCountsForProfile = async (
   page: Page,
   baseXpath: string

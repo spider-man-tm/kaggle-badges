@@ -9,6 +9,10 @@ import { addAnimation } from "./animation";
 import { medals } from "./medals";
 import { ensureDirectoryExistence } from "../utils";
 
+/**
+ * Create a plate for each category in the Kaggle profile
+ * @param profile The Kaggle profile data
+ */
 export async function createPlate(profile: KaggleProfile) {
   // This directory will be created in the root of the project
   const projectRoot = process.cwd();
@@ -44,6 +48,16 @@ export async function createPlate(profile: KaggleProfile) {
   }
 }
 
+/**
+ * Create the base SVG plate for a category
+ * @param saveFilePath
+ * @param category
+ * @param rank
+ * @param goldCount
+ * @param silverCount
+ * @param bronzeCount
+ * @param backGround
+ */
 async function createPlateBase(
   saveFilePath: string,
   category: string,
@@ -57,8 +71,6 @@ async function createPlateBase(
     // Create a DOM window and document using jsdom
     const { window } = new JSDOM("<!DOCTYPE html><html><body></body></html>");
     const { document } = window;
-
-    // Type casting to resolve the TypeScript type error
     registerWindow(window as unknown as Window & typeof globalThis, document);
 
     // Create SVG canvas and cast it to Svg type
@@ -75,11 +87,7 @@ async function createPlateBase(
     const logoSVG = await loadExternalSVG(
       `https://www.kaggle.com/static/images/tiers/${rank.toLowerCase()}.svg`
     );
-
-    // Add the logo to the canvas
     const logo = canvas.nested().svg(logoSVG).move(27, 30);
-
-    // Define gradients for metallic effect
     const defs = canvas.defs();
 
     medals.forEach((medal) => {
@@ -102,7 +110,7 @@ async function createPlateBase(
       titleX = 19;
     } else if (category == "Notebooks") {
       titleX = 13.4;
-    } else if (category == "Discussion") {
+    } else if (category == "Discussions") {
       titleX = 9.5;
     }
     if (backGround === "black") {
@@ -131,6 +139,10 @@ async function createPlateBase(
   }
 }
 
+/**
+ * Load the SVG content from an external URL
+ * @param url The URL to fetch the SVG content from
+ */
 async function loadExternalSVG(url: string): Promise<string> {
   try {
     const response = await fetch(url);

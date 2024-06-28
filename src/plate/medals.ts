@@ -1,5 +1,8 @@
 import { Medal } from "../types";
 
+/**
+ * The medals to display on the plate
+ */
 export const medals: Medal[] = [
   {
     type: "gold",
