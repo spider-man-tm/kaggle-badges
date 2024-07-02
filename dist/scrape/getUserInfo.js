@@ -17,7 +17,7 @@ async function getKaggleuserProfile(userName) {
     await page.goto(url, { waitUntil: "networkidle2" });
     await new Promise((resolve) => setTimeout(resolve, 10000));
     // check xpaths and xpaths_sub
-    const using_xpaths = await checkXpaths(page, xpaths_1.xpaths, xpaths_1.xpaths_sub);
+    const using_xpaths = await checkXpaths(page, xpaths_1.xpaths_sub, xpaths_1.xpaths);
     // Initialize the userProfile object
     let userProfile = {};
     for (const key in using_xpaths) {
