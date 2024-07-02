@@ -15,7 +15,7 @@ async function getKaggleuserProfile(userName) {
     const browser = await puppeteer_1.default.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2" });
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     // check xpaths and xpaths_sub
     const using_xpaths = await checkXpaths(page, xpaths_1.xpaths_sub, xpaths_1.xpaths);
     // Initialize the userProfile object
@@ -129,15 +129,14 @@ const checkXpaths = async (page, xpaths, xpaths_sub) => {
         await getTextContentByXpath(page, xpath_1);
     }
     catch (error) {
-        console.log("xpath_1 error: ", error);
         using_xpaths = xpaths_sub;
         try {
             await getTextContentByXpath(page, xpath_2);
         }
         catch (error) {
-            console.log("xpath_2 error: ", error);
             throw new Error("No valid xpath found");
         }
     }
+    console.log(using_xpaths);
     return using_xpaths;
 };

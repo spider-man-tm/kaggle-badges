@@ -158,6 +158,7 @@ const checkXpaths = async (page: Page, xpaths: any, xpaths_sub: any) => {
       throw new Error("No valid xpath found");
     }
   }
+  console.log(using_xpaths);
 
   return using_xpaths;
 };
