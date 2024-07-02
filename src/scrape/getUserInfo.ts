@@ -1,5 +1,5 @@
 import puppeteer, { Page } from "puppeteer";
-import { xpaths } from "./xpaths";
+import { xpaths, xpaths_sub } from "./xpaths";
 import { KaggleProfile, Rank } from "../types";
 
 /**
@@ -15,10 +15,27 @@ export async function getKaggleuserProfile(
   await page.goto(url, { waitUntil: "networkidle2" });
   await new Promise((resolve) => setTimeout(resolve, 10000));
 
+  // check xpaths and xpaths_sub
+  const xpath_1 = xpaths["Competitions"].rank;
+  const xpath_2 = xpaths_sub["Competitions"].rank;
+  let using_xpaths = xpaths;
+  try {
+    await getTextContentByXpath(page, xpath_1);
+  } catch (error) {
+    console.log("xpath_1 error: ", error);
+    using_xpaths = xpaths_sub;
+    try {
+      await getTextContentByXpath(page, xpath_2);
+    } catch (error) {
+      console.log("xpath_2 error: ", error);
+      throw new Error("No valid xpath found");
+    }
+  }
+
   // Initialize the userProfile object
   let userProfile: KaggleProfile = {};
 
-  for (const key in xpaths) {
+  for (const key in using_xpaths) {
     const section = xpaths[key as keyof typeof xpaths];
 
     const rank = await getTextContentByXpath(page, section.rank);
