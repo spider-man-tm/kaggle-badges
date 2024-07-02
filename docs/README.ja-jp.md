@@ -58,7 +58,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  create-badges:
     runs-on: ubuntu-latest
 
     steps:
