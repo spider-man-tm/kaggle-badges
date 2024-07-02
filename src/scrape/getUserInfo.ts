@@ -21,7 +21,7 @@ export async function getKaggleuserProfile(
   let userProfile: KaggleProfile = {};
 
   for (const key in using_xpaths) {
-    const section = xpaths[key as keyof typeof xpaths];
+    const section = using_xpaths[key as keyof typeof using_xpaths];
 
     const rank = await getTextContentByXpath(page, section.rank);
     const medalCounts = await getMedalCountsForProfile(
