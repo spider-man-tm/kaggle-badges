@@ -1,6 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
 import { xpaths, xpaths_sub } from "./xpaths";
-import { KaggleProfile, Rank } from "../types";
+import { KaggleProfile, Rank, Xpaths } from "../types";
 
 /**
  * Get the user profile from Kaggle
@@ -142,7 +142,7 @@ const getMedalCountsForProfile = async (
  * @param xpaths - The xpaths object
  * @param xpaths_sub - The xpaths_sub object
  */
-const checkXpaths = async (page: Page, xpaths: any, xpaths_sub: any) => {
+const checkXpaths = async (page: Page, xpaths: Xpaths, xpaths_sub: Xpaths) => {
   // check xpaths and xpaths_sub
   const xpath_1 = xpaths["Competitions"].rank;
   const xpath_2 = xpaths_sub["Competitions"].rank;

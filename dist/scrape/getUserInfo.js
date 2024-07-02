@@ -17,11 +17,11 @@ async function getKaggleuserProfile(userName) {
     await page.goto(url, { waitUntil: "networkidle2" });
     await new Promise((resolve) => setTimeout(resolve, 5000));
     // check xpaths and xpaths_sub
-    const using_xpaths = await checkXpaths(page, xpaths_1.xpaths_sub, xpaths_1.xpaths);
+    const using_xpaths = await checkXpaths(page, xpaths_1.xpaths, xpaths_1.xpaths_sub);
     // Initialize the userProfile object
     let userProfile = {};
     for (const key in using_xpaths) {
-        const section = xpaths_1.xpaths[key];
+        const section = using_xpaths[key];
         const rank = await getTextContentByXpath(page, section.rank);
         const medalCounts = await getMedalCountsForProfile(page, section.medal_count);
         // Initialize the corresponding section in userProfile if not already initialized
@@ -137,6 +137,5 @@ const checkXpaths = async (page, xpaths, xpaths_sub) => {
             throw new Error("No valid xpath found");
         }
     }
-    console.log(using_xpaths);
     return using_xpaths;
 };
