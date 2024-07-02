@@ -1,6 +1,6 @@
 import puppeteer, { Page } from "puppeteer";
-import { xpaths } from "./xpaths";
-import { KaggleProfile, Rank } from "../types";
+import { xpaths, xpaths_sub } from "./xpaths";
+import { KaggleProfile, Rank, Xpaths } from "../types";
 
 /**
  * Get the user profile from Kaggle
@@ -13,13 +13,15 @@ export async function getKaggleuserProfile(
   const browser = await puppeteer.launch({ headless: true });
   const page: Page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle2" });
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 
+  // check xpaths and xpaths_sub
+  const using_xpaths = await checkXpaths(page, xpaths, xpaths_sub);
   // Initialize the userProfile object
   let userProfile: KaggleProfile = {};
 
-  for (const key in xpaths) {
-    const section = xpaths[key as keyof typeof xpaths];
+  for (const key in using_xpaths) {
+    const section = using_xpaths[key as keyof typeof using_xpaths];
 
     const rank = await getTextContentByXpath(page, section.rank);
     const medalCounts = await getMedalCountsForProfile(
@@ -132,4 +134,30 @@ const getMedalCountsForProfile = async (
   });
 
   return medalCounts;
+};
+
+/**
+ * Check xpaths and xpaths_sub
+ * @param page - The Puppeteer page
+ * @param xpaths - The xpaths object
+ * @param xpaths_sub - The xpaths_sub object
+ */
+const checkXpaths = async (page: Page, xpaths: Xpaths, xpaths_sub: Xpaths) => {
+  // check xpaths and xpaths_sub
+  const xpath_1 = xpaths["Competitions"].rank;
+  const xpath_2 = xpaths_sub["Competitions"].rank;
+  let using_xpaths = xpaths;
+
+  try {
+    await getTextContentByXpath(page, xpath_1);
+  } catch (error) {
+    using_xpaths = xpaths_sub;
+    try {
+      await getTextContentByXpath(page, xpath_2);
+    } catch (error) {
+      throw new Error("No valid xpath found");
+    }
+  }
+
+  return using_xpaths;
 };
