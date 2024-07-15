@@ -70,11 +70,10 @@ export interface ColorStop {
 }
 
 /**
- * Personal medal data
+ * Medal Image Settings
  */
 export interface Medal {
   type: string;
-  count: number;
   stops: ColorStop[];
   x: number;
   y: number;
