@@ -15,7 +15,7 @@ Below is a list of badges for Competitions. Similar style badges are automatical
 | [![Grandmaster](./docs/images/badges/Grandmaster/flat-square-black.svg)]() | [![Master](./docs/images/badges/Master/flat-square-black.svg)]() | [![Expert](./docs/images/badges/Expert/flat-square-black.svg)]() | [![Contributor](./docs/images/badges/Contributor/flat-square-black.svg)]() |
 | [![Grandmaster](./docs/images/badges/Grandmaster/flat-square-white.svg)]() | [![Master](./docs/images/badges/Master/flat-square-white.svg)]() | [![Expert](./docs/images/badges/Expert/flat-square-white.svg)]() | [![Contributor](./docs/images/badges/Contributor/flat-square-white.svg)]() |
 
-Additionally, we automatically generate badges based on the number of medals earned. Below is my Kaggle achievement status as of 2024/06/28.
+Additionally, we automatically generate badges based on the number of medals earned.
 
 |                                                  |                                              |                                               |                                                 |
 | ------------------------------------------------ | -------------------------------------------- | --------------------------------------------- | ----------------------------------------------- |
