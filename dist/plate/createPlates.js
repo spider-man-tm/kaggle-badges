@@ -119,12 +119,23 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
         else if (backGround === "white") {
             fontColor = "black";
         }
-        const newText = `
-      <text x="${titleX}" y="18" font-family="'Ubuntu','Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="13" fill="${fontColor}">${category}</text>
-      <text x="20.3" y="111" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="#AD7615">${goldCount}</text>
-      <text x="43.3" y="111" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="#838280">${silverCount}</text>
-      <text x="66.3" y="111" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="#8E5B3D">${bronzeCount}</text>
-    `;
+        let newText = `<text x="${titleX}" y="18" font-family="'Ubuntu','Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="13" fill="${fontColor}">${category}</text>`;
+        for (let i = 0; i < 3; i++) {
+            let medalCountFontColor = medals_1.medals[i].stops[0].color;
+            let medalCount = 0;
+            if (i == 0) {
+                medalCount = goldCount;
+            }
+            else if (i == 1) {
+                medalCount = silverCount;
+            }
+            else {
+                medalCount = bronzeCount;
+            }
+            const x_point = medalCount < 10 ? medals_1.medals[i].x + 4.5 : medals_1.medals[i].x;
+            const y_point = 111;
+            newText += `<text x="${x_point}" y="${y_point}" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="${medalCountFontColor}">${medalCount}</text>`;
+        }
         const insertPosition = svgData.lastIndexOf("</svg>");
         if (insertPosition !== -1) {
             svgData =
