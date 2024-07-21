@@ -13,7 +13,7 @@ export async function getKaggleuserProfile(
   const browser = await puppeteer.launch({ headless: true });
   const page: Page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle2" });
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  await new Promise((resolve) => setTimeout(resolve, 8000));
 
   // check xpaths and xpaths_sub
   const using_xpaths = await checkXpaths(page, xpaths, xpaths_sub);
@@ -24,6 +24,17 @@ export async function getKaggleuserProfile(
     const section = using_xpaths[key as keyof typeof using_xpaths];
 
     const rank = await getTextContentByXpath(page, section.rank);
+
+    let order = "";
+    let participants = "";
+    try {
+      order = await getTextContentByXpath(page, section.order);
+      participants = await getTextContentByXpath(page, section.participants);
+      participants = participants.replace("of", "");
+      participants = participants.trim();
+    } catch (error) {
+      console.log(`${key}: No order and participants found`);
+    }
     const medalCounts = await getMedalCountsForProfile(
       page,
       section.medal_count
@@ -34,21 +45,37 @@ export async function getKaggleuserProfile(
       userProfile.Competitions = {
         rank: rank as Rank,
         medal_counts: medalCounts,
+        order: {
+          order: order,
+          participants: participants,
+        },
       };
     } else if (key === "Datasets") {
       userProfile.Datasets = {
         rank: rank as Rank,
         medal_counts: medalCounts,
+        order: {
+          order: order,
+          participants: participants,
+        },
       };
     } else if (key === "Notebooks") {
       userProfile.Notebooks = {
         rank: rank as Rank,
         medal_counts: medalCounts,
+        order: {
+          order: order,
+          participants: participants,
+        },
       };
     } else if (key === "Discussions") {
       userProfile.Discussions = {
         rank: rank as Rank,
         medal_counts: medalCounts,
+        order: {
+          order: order,
+          participants: participants,
+        },
       };
     }
   }
@@ -61,19 +88,32 @@ export async function getKaggleuserProfile(
  * Get the text content of an element by XPath
  * @param page - The Puppeteer page
  * @param xpath - The XPath of the element
+ * @param timeout - The timeout in milliseconds (default is 5000 ms)
  */
 const getTextContentByXpath = async (
   page: Page,
-  xpath: string
+  xpath: string,
+  timeout: number = 1000
 ): Promise<string> => {
-  const elementHandle = await page.waitForSelector(`::-p-xpath(${xpath})`);
-  const info = await page.evaluate((element: Element | null) => {
-    return element ? element.textContent : null;
-  }, elementHandle);
-  if (info == null) {
-    throw new Error(`Text not found for xpath: ${xpath}`);
-  }
-  return info;
+  const timeoutPromise = new Promise<never>((_, reject) =>
+    setTimeout(
+      () => reject(new Error(`Timeout exceeded for xpath: ${xpath}`)),
+      timeout
+    )
+  );
+
+  const getTextContentPromise = async () => {
+    const elementHandle = await page.waitForSelector(`::-p-xpath(${xpath})`);
+    const info = await page.evaluate((element: Element | null) => {
+      return element ? element.textContent : null;
+    }, elementHandle);
+    if (info == null) {
+      throw new Error(`Text not found for xpath: ${xpath}`);
+    }
+    return info;
+  };
+
+  return Promise.race([getTextContentPromise(), timeoutPromise]);
 };
 
 /**

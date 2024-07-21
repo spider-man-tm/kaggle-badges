@@ -30,6 +30,8 @@ export async function createPlate(profile: KaggleProfile) {
           const goldCount = section.medal_counts.gold;
           const silverCount = section.medal_counts.silver;
           const bronzeCount = section.medal_counts.bronze;
+          const order = section.order.order;
+          const participants = section.order.participants;
           const saveDir = path.join(platesDirBase, `${category}`);
           ensureDirectoryExistence(saveDir);
           const saveFilePath = path.join(saveDir, `${color}.svg`);
@@ -40,6 +42,8 @@ export async function createPlate(profile: KaggleProfile) {
             goldCount,
             silverCount,
             bronzeCount,
+            order,
+            participants,
             color as "white" | "black"
           );
         }
@@ -65,6 +69,8 @@ async function createPlateBase(
   goldCount: number,
   silverCount: number,
   bronzeCount: number,
+  order: string,
+  participants: string,
   backGround: "white" | "black" = "white"
 ) {
   try {
@@ -74,11 +80,11 @@ async function createPlateBase(
     registerWindow(window as unknown as Window & typeof globalThis, document);
 
     // Create SVG canvas and cast it to Svg type
-    const canvas = SVG().addTo(document.body).size(95, 120) as Svg;
+    const canvas = SVG().addTo(document.body).size(95, 160) as Svg;
 
     // Add a rectangle to outline the entire canvas
     canvas
-      .rect(95, 120)
+      .rect(95, 160)
       .stroke({ color: "#d3d3d3", width: 2 })
       .fill(backGround)
       .radius(7); // Adds rounded corners with a radius
@@ -134,6 +140,11 @@ async function createPlateBase(
       const y_point = 111;
 
       newText += `<text x="${x_point}" y="${y_point}" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="${medalCountFontColor}">${medalCount}</text>`;
+    }
+
+    if (order != "") {
+      newText += `<text x="8" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="12" fill="${fontColor}">Rank ${order}</text>`;
+      newText += `<text x="33" y="150" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="10" fill="${fontColor}">of ${participants}</text>`;
     }
 
     const insertPosition = svgData.lastIndexOf("</svg>");
