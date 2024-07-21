@@ -12,6 +12,7 @@ async function run() {
     }
     // get the user profile
     const userProfile = await getKaggleuserProfile(userName);
+    console.log(userProfile);
     // create the badge
     await createBadge(userProfile);
     await createPlate(userProfile);

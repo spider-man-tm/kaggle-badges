@@ -5,6 +5,7 @@ export type Category =
   | "Notebooks"
   | "Discussions";
 export type MedalCounts = { gold: number; silver: number; bronze: number };
+export type Order = { order: string; participants: string };
 
 /**
  * Color map for each rank
@@ -24,21 +25,23 @@ export interface ColorMap {
 /**
  * Kaggle profile data
  * @type {KaggleProfile}
- * @property { rank: Rank, medal_counts: MedalCounts } Competitions - Competitions data
- * @property { rank: Rank, medal_counts: MedalCounts } Datasets - Datasets data
- * @property { rank: Rank, medal_counts: MedalCounts } Notebooks - Notebooks data
- * @property { rank: Rank, medal_counts: MedalCounts } Discussions - Discussions data
+ * @property { rank: Rank, medal_counts: MedalCounts, order: Order } Competitions - Competitions data
+ * @property { rank: Rank, medal_counts: MedalCounts, order: Order } Datasets - Datasets data
+ * @property { rank: Rank, medal_counts: MedalCounts, order: Order } Notebooks - Notebooks data
+ * @property { rank: Rank, medal_counts: MedalCounts, order: Order } Discussions - Discussions data
  */
 export interface KaggleProfile {
-  Competitions?: { rank: Rank; medal_counts: MedalCounts };
-  Datasets?: { rank: Rank; medal_counts: MedalCounts };
-  Notebooks?: { rank: Rank; medal_counts: MedalCounts };
-  Discussions?: { rank: Rank; medal_counts: MedalCounts };
+  Competitions?: { rank: Rank; medal_counts: MedalCounts; order: Order };
+  Datasets?: { rank: Rank; medal_counts: MedalCounts; order: Order };
+  Notebooks?: { rank: Rank; medal_counts: MedalCounts; order: Order };
+  Discussions?: { rank: Rank; medal_counts: MedalCounts; order: Order };
 }
 
 interface Xpath {
   rank: string;
   medal_count: string;
+  order: string;
+  participants: string;
 }
 
 /**
