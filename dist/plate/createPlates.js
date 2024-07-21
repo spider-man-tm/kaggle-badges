@@ -55,10 +55,12 @@ async function createPlate(profile) {
                     const goldCount = section.medal_counts.gold;
                     const silverCount = section.medal_counts.silver;
                     const bronzeCount = section.medal_counts.bronze;
+                    const order = section.order.order;
+                    const participants = section.order.participants;
                     const saveDir = path.join(platesDirBase, `${category}`);
                     (0, utils_1.ensureDirectoryExistence)(saveDir);
                     const saveFilePath = path.join(saveDir, `${color}.svg`);
-                    createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, color);
+                    createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, participants, color);
                 }
             }
         }
@@ -74,17 +76,17 @@ async function createPlate(profile) {
  * @param bronzeCount
  * @param backGround
  */
-async function createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, backGround = "white") {
+async function createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, participants, backGround = "white") {
     try {
         // Create a DOM window and document using jsdom
         const { window } = new jsdom_1.JSDOM("<!DOCTYPE html><html><body></body></html>");
         const { document } = window;
         (0, svg_js_1.registerWindow)(window, document);
         // Create SVG canvas and cast it to Svg type
-        const canvas = (0, svg_js_1.SVG)().addTo(document.body).size(95, 120);
+        const canvas = (0, svg_js_1.SVG)().addTo(document.body).size(95, 160);
         // Add a rectangle to outline the entire canvas
         canvas
-            .rect(95, 120)
+            .rect(95, 160)
             .stroke({ color: "#d3d3d3", width: 2 })
             .fill(backGround)
             .radius(7); // Adds rounded corners with a radius
@@ -135,6 +137,10 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
             const x_point = medalCount < 10 ? medals_1.medals[i].x + 4.5 : medals_1.medals[i].x;
             const y_point = 111;
             newText += `<text x="${x_point}" y="${y_point}" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="${medalCountFontColor}">${medalCount}</text>`;
+        }
+        if (order != "") {
+            newText += `<text x="8" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="12" fill="${fontColor}">Rank ${order}</text>`;
+            newText += `<text x="33" y="150" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="10" fill="${fontColor}">of ${participants}</text>`;
         }
         const insertPosition = svgData.lastIndexOf("</svg>");
         if (insertPosition !== -1) {
