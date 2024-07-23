@@ -51,6 +51,9 @@ Copy the following code and paste it into the YAML file. Replace { Your Kaggle U
 name: Kaggle Badges
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # You can change the cron expression to suit your needs
     - cron: "11 11 1 * *" # 11:11 AM on the 1st of every month
