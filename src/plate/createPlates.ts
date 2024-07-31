@@ -31,7 +31,6 @@ export async function createPlate(profile: KaggleProfile) {
           const silverCount = section.medal_counts.silver;
           const bronzeCount = section.medal_counts.bronze;
           const order = section.order.order;
-          const participants = section.order.participants;
           const saveDir = path.join(platesDirBase, `${category}`);
           ensureDirectoryExistence(saveDir);
           const saveFilePath = path.join(saveDir, `${color}.svg`);
@@ -43,7 +42,6 @@ export async function createPlate(profile: KaggleProfile) {
             silverCount,
             bronzeCount,
             order,
-            participants,
             color as "white" | "black"
           );
         }
@@ -70,7 +68,6 @@ async function createPlateBase(
   silverCount: number,
   bronzeCount: number,
   order: string,
-  participants: string,
   backGround: "white" | "black" = "white"
 ) {
   try {
@@ -80,11 +77,11 @@ async function createPlateBase(
     registerWindow(window as unknown as Window & typeof globalThis, document);
 
     // Create SVG canvas and cast it to Svg type
-    const canvas = SVG().addTo(document.body).size(95, 160) as Svg;
+    const canvas = SVG().addTo(document.body).size(95, 147) as Svg;
 
     // Add a rectangle to outline the entire canvas
     canvas
-      .rect(95, 160)
+      .rect(95, 147)
       .stroke({ color: "#d3d3d3", width: 2 })
       .fill(backGround)
       .radius(7); // Adds rounded corners with a radius
@@ -142,10 +139,31 @@ async function createPlateBase(
       newText += `<text x="${x_point}" y="${y_point}" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="${medalCountFontColor}">${medalCount}</text>`;
     }
 
-    if (order != "") {
-      newText += `<text x="8" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="12" fill="${fontColor}">Rank ${order}</text>`;
-      newText += `<text x="33" y="150" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="10" fill="${fontColor}">of ${participants}</text>`;
+    let _x = 0;
+    let _order = "";
+    if (order == "") {
+      _x = 10;
+      _order = "Not ranked";
+    } else if (order.length == 1) {
+      _x = 35;
+      _order = addOrdinalSuffix(order);
+    } else if (order.length == 2) {
+      _x = 32;
+      _order = addOrdinalSuffix(order);
+    } else if (order.length == 3) {
+      _x = 29;
+      _order = addOrdinalSuffix(order);
+    } else if (order.length == 5) {
+      _x = 22;
+      _order = addOrdinalSuffix(order);
+    } else if (order.length == 6) {
+      _x = 18;
+      _order = addOrdinalSuffix(order);
+    } else if (order.length == 7) {
+      _x = 14;
+      _order = addOrdinalSuffix(order);
     }
+    newText += `<text x="${_x}" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="14" fill="${fontColor}">${_order}</text>`;
 
     const insertPosition = svgData.lastIndexOf("</svg>");
     if (insertPosition !== -1) {
@@ -174,4 +192,46 @@ async function loadExternalSVG(url: string): Promise<string> {
     console.error(`Error fetching the SVG content from the URL: ${url}`);
     throw error;
   }
+}
+
+/**
+ * Add the ordinal suffix to a number
+ * @param numStr The number as a string
+ */
+function addOrdinalSuffix(numStr: string): string {
+  // Remove commas from the input string
+  numStr = numStr.replace(/,/g, "");
+
+  // Check for invalid input (non-numeric strings)
+  if (isNaN(Number(numStr))) {
+    throw new Error("Invalid input: Not a number");
+  }
+
+  const num = parseInt(numStr, 10);
+  const lastDigit = num % 10;
+  const lastTwoDigits = num % 100;
+
+  let suffix = "th";
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    // Special cases for 11th, 12th, 13th
+    suffix = "th";
+  } else {
+    switch (lastDigit) {
+      case 1:
+        suffix = "st";
+        break;
+      case 2:
+        suffix = "nd";
+        break;
+      case 3:
+        suffix = "rd";
+        break;
+    }
+  }
+
+  // Add commas to the number
+  const formattedNum = num.toLocaleString();
+
+  return `${formattedNum}${suffix}`;
 }

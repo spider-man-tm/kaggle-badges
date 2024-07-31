@@ -56,11 +56,10 @@ async function createPlate(profile) {
                     const silverCount = section.medal_counts.silver;
                     const bronzeCount = section.medal_counts.bronze;
                     const order = section.order.order;
-                    const participants = section.order.participants;
                     const saveDir = path.join(platesDirBase, `${category}`);
                     (0, utils_1.ensureDirectoryExistence)(saveDir);
                     const saveFilePath = path.join(saveDir, `${color}.svg`);
-                    createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, participants, color);
+                    createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, color);
                 }
             }
         }
@@ -76,17 +75,17 @@ async function createPlate(profile) {
  * @param bronzeCount
  * @param backGround
  */
-async function createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, participants, backGround = "white") {
+async function createPlateBase(saveFilePath, category, rank, goldCount, silverCount, bronzeCount, order, backGround = "white") {
     try {
         // Create a DOM window and document using jsdom
         const { window } = new jsdom_1.JSDOM("<!DOCTYPE html><html><body></body></html>");
         const { document } = window;
         (0, svg_js_1.registerWindow)(window, document);
         // Create SVG canvas and cast it to Svg type
-        const canvas = (0, svg_js_1.SVG)().addTo(document.body).size(95, 160);
+        const canvas = (0, svg_js_1.SVG)().addTo(document.body).size(95, 147);
         // Add a rectangle to outline the entire canvas
         canvas
-            .rect(95, 160)
+            .rect(95, 147)
             .stroke({ color: "#d3d3d3", width: 2 })
             .fill(backGround)
             .radius(7); // Adds rounded corners with a radius
@@ -138,10 +137,37 @@ async function createPlateBase(saveFilePath, category, rank, goldCount, silverCo
             const y_point = 111;
             newText += `<text x="${x_point}" y="${y_point}" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="13" fill="${medalCountFontColor}">${medalCount}</text>`;
         }
-        if (order != "") {
-            newText += `<text x="8" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="12" fill="${fontColor}">Rank ${order}</text>`;
-            newText += `<text x="33" y="150" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-size="10" fill="${fontColor}">of ${participants}</text>`;
+        let _x = 0;
+        let _order = "";
+        if (order == "") {
+            _x = 10;
+            _order = "Not ranked";
         }
+        else if (order.length == 1) {
+            _x = 35;
+            _order = addOrdinalSuffix(order);
+        }
+        else if (order.length == 2) {
+            _x = 32;
+            _order = addOrdinalSuffix(order);
+        }
+        else if (order.length == 3) {
+            _x = 29;
+            _order = addOrdinalSuffix(order);
+        }
+        else if (order.length == 5) {
+            _x = 22;
+            _order = addOrdinalSuffix(order);
+        }
+        else if (order.length == 6) {
+            _x = 18;
+            _order = addOrdinalSuffix(order);
+        }
+        else if (order.length == 7) {
+            _x = 14;
+            _order = addOrdinalSuffix(order);
+        }
+        newText += `<text x="${_x}" y="135" font-family="'Ubuntu', 'Helvetica', 'Arial', sans-serif" font-weight="bold" font-size="14" fill="${fontColor}">${_order}</text>`;
         const insertPosition = svgData.lastIndexOf("</svg>");
         if (insertPosition !== -1) {
             svgData =
@@ -170,4 +196,40 @@ async function loadExternalSVG(url) {
         console.error(`Error fetching the SVG content from the URL: ${url}`);
         throw error;
     }
+}
+/**
+ * Add the ordinal suffix to a number
+ * @param numStr The number as a string
+ */
+function addOrdinalSuffix(numStr) {
+    // Remove commas from the input string
+    numStr = numStr.replace(/,/g, "");
+    // Check for invalid input (non-numeric strings)
+    if (isNaN(Number(numStr))) {
+        throw new Error("Invalid input: Not a number");
+    }
+    const num = parseInt(numStr, 10);
+    const lastDigit = num % 10;
+    const lastTwoDigits = num % 100;
+    let suffix = "th";
+    if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+        // Special cases for 11th, 12th, 13th
+        suffix = "th";
+    }
+    else {
+        switch (lastDigit) {
+            case 1:
+                suffix = "st";
+                break;
+            case 2:
+                suffix = "nd";
+                break;
+            case 3:
+                suffix = "rd";
+                break;
+        }
+    }
+    // Add commas to the number
+    const formattedNum = num.toLocaleString();
+    return `${formattedNum}${suffix}`;
 }
