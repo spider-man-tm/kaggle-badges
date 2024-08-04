@@ -52,6 +52,9 @@
 name: Kaggle Badges
 
 on:
+  push:
+    branches:
+      - main
   schedule:
     # You can change the cron expression to suit your needs
     - cron: "11 11 1 * *" # 11:11 AM on the 1st of every month
@@ -74,7 +77,7 @@ jobs:
         run: npx puppeteer browsers install chrome@126.0.6478.63
 
       - name: Use Kaggle Badges Action
-        uses: spider-man-tm/kaggle-badges@v1.1.0
+        uses: spider-man-tm/kaggle-badges@v1.2.2
         with:
           # ex. user_name: spidermandance
           user_name: { Your Kaggle Username }
