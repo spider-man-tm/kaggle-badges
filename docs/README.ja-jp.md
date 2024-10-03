@@ -74,7 +74,7 @@ jobs:
           node-version: "20"
 
       - name: Install Puppeteer browser
-        run: npx puppeteer browsers install chrome@127.0.6533.88
+        run: npx puppeteer browsers install chrome@129.0.6668.70
 
       - name: Use Kaggle Badges Action
         uses: spider-man-tm/kaggle-badges@v1.2.3
