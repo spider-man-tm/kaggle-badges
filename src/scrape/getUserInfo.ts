@@ -10,10 +10,7 @@ export async function getKaggleuserProfile(
   userName: string
 ): Promise<KaggleProfile> {
   const url = `https://www.kaggle.com/${userName}`;
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const browser = await puppeteer.launch({ headless: true });
   const page: Page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle2" });
   await new Promise((resolve) => setTimeout(resolve, 8000));
