@@ -1,7 +1,10 @@
 import puppeteer from "puppeteer";
 
 async function getChromiumVersion(): Promise<string> {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+  });
   const version = await browser.version();
   await browser.close();
   return version;
