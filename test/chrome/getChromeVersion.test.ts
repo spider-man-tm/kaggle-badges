@@ -13,6 +13,6 @@ async function getChromiumVersion(): Promise<string> {
 describe("getChromiumVersion", () => {
   it("should return a valid version of Chromium", async () => {
     const version = await getChromiumVersion();
-    expect(version).toMatch("Chrome/129.0.6668.70");
+    expect(version).toMatch("Chrome/131.0.6778.85");
   });
 });
