@@ -76,7 +76,7 @@ jobs:
         run: npx puppeteer browsers install chrome@131.0.6778.85
 
       - name: Use Kaggle Badges Action
-        uses: spider-man-tm/kaggle-badges@v1.2.6
+        uses: spider-man-tm/kaggle-badges@v1.3.0
         with:
           # ex. user_name: spidermandance
           user_name: { Your Kaggle Username }
