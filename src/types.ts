@@ -38,6 +38,7 @@ export interface KaggleProfile {
 }
 
 interface Xpath {
+  category: string;
   rank: string;
   medal_count: string;
   order: string;
@@ -48,10 +49,10 @@ interface Xpath {
  * Xpaths for each category
  */
 export interface Xpaths {
-  Competitions: Xpath;
-  Datasets: Xpath;
-  Notebooks: Xpath;
-  Discussions: Xpath;
+  FirstSets: Xpath;
+  SecondSets: Xpath;
+  ThirdSets: Xpath;
+  ForthSets: Xpath;
 }
 
 /**
