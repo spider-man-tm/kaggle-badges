@@ -16,9 +16,9 @@
     "@svgdotjs/svg.js": "^3.2.4",
     "@types/puppeteer": "^7.0.4",
     "axios": "^1.7.8",
-    "jsdom": "^25.0.1",
+    "jsdom": "^26.1.0",
     "node-fetch": "^3.3.2",
-    "puppeteer": "^23.9.0",
+    "puppeteer": "^24.7.2",
     "svg.js": "^2.7.1"
   },
   "devDependencies": {
